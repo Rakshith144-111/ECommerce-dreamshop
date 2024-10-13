@@ -78,8 +78,11 @@ public class ProductService implements IProductService {
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
         return productRepository.findById(productId)
+        		//If the product was found (i.e., the Optional is present), the lambda function is executed
                 .map(existingProduct -> updateExistingProduct(existingProduct,request))
+                //Equivalent to """.map(product -> productRepository.save(product))"""
                 .map(productRepository :: save)
+                //executes only if the product is not found
                 .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 

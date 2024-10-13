@@ -24,7 +24,9 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category getCategoryByName(String name) {
-        return categoryRepository.findByName(name);
+        return categoryRepository.findByName(name)
+        		//we can't add it because it is returning of type Category ,the below one works only if it returns Optional type
+        		//.orElseThrow(()->new ResourceNotFoundException("Category with such name not found"));
     }
 
     @Override
@@ -34,6 +36,9 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category addCategory(Category category) {
+        //  checks if a category with the same name does not already exist in the database by calling 
+    	//  categoryRepository.existsByName(c.getName()).
+        //	categoryRepository.existsByName(c.getName()) returns true if a category with the given name already exists in the repository.
         return  Optional.of(category).filter(c -> !categoryRepository.existsByName(c.getName()))
                 .map(categoryRepository :: save)
                 .orElseThrow(() -> new AlreadyExistsException(category.getName()+" already exists"));
