@@ -11,6 +11,8 @@ public interface IProductService {
     Product getProductById(Long id);
     void deleteProductById(Long id);
     Product updateProduct(ProductUpdateRequest product, Long productId);
+    //For the below methods JPA is going to write the 
+    //query based on the parameter name and the standard function name
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);

@@ -31,15 +31,21 @@ public class ProductService implements IProductService {
     public Product addProduct(AddProductRequest request) {
         // check if the category is found in the DB
         // If Yes, set it as the new product category
-        // If No, the save it as a new category
+        // If No, then save it as a new category
         // The set as the new product category.
-
-        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
-                .orElseGet(() -> {
+    	// Here optional because may be the category is available or may not be available
+    	// request.getCategory().getName()) == > checking whether the category is there in databse or not
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))//checking here whether category is there or not
+               // if the category is not there then creating a new category
+        		.orElseGet(() -> {
+        			// creating the new caategory
                     Category newCategory = new Category(request.getCategory().getName());
+                    // Saving to repo
                     return categoryRepository.save(newCategory);
                 });
+        // setting here the category for which we want to add a product my be a new category or existing one
         request.setCategory(category);
+        //After creating / setting the existing Category create a product for the same Category
         return productRepository.save(createProduct(request, category));
     }
 
@@ -64,6 +70,7 @@ public class ProductService implements IProductService {
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id)
+        						//if present delete the product or else throw the exception
                 .ifPresentOrElse(productRepository::delete,
                         () -> {throw new ResourceNotFoundException("Product not found!");});
     }
