@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class CartItemService  implements ICartItemService{
-    private final CartItemRepository cartItemRepository;
-    private final CartRepository cartRepository;
-    private final IProductService productService;
-    private final ICartService cartService;
+    private CartItemRepository cartItemRepository;
+    private CartRepository cartRepository;
+    private IProductService productService;
+    private ICartService cartService;
     
     @Override
     public void addItemToCart(Long cartId, Long productId, int quantity) {
